@@ -1,13 +1,8 @@
 !pip install PyPDF2
-!pip install spacy
-!python -m spacy download en_core_web_sm
 
 import re
-import spacy
 from collections import Counter
 import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
 import numpy as np
 import requests
 import PyPDF2
@@ -55,7 +50,7 @@ lengths_eng = [wordlength_eng[word] for word in wordfreq_eng]
 
 # Calculate Pearson correlation coefficient for English
 correlation = np.corrcoef(frequencies_eng, lengths_eng)[0, 1]
-print(f"Correlation between word frequency and word length: {correlation:.2f}")
+print(f"Correlation between word frequency and word length in an English legal text: {correlation:.2f}")
 
 # Plot word frequency vs. word length for English
 plt.scatter(frequencies_eng, lengths_eng, alpha=0.5)
@@ -107,7 +102,7 @@ lengths_eusk = [wordlength_eusk[word] for word in wordfreq_eusk]
 
 # Calculate Pearson correlation coefficient for Basque
 correlation = np.corrcoef(frequencies_eusk, lengths_eusk)[0, 1]
-print(f"Correlation between word frequency and word length: {correlation:.2f}")
+print(f"Correlation between word frequency and word length in a Basque legal text: {correlation:.2f}")
 
 # Plot word frequency vs. word length for Basque
 plt.scatter(frequencies_eusk, lengths_eusk, alpha=0.5)
@@ -148,8 +143,8 @@ frequencies_homer_eng = list(wordfreq_homer_eng.values())
 lengths_homer_eng = [wordlength_homer_eng[word] for word in wordfreq_homer_eng]
 
 # Calculate Pearson correlation coefficient in English Homer
-correlation = np.corrcoef(frequencies, lengths)[0, 1]
-print(f"Correlation between word frequency and word length: {correlation:.2f}")
+correlation = np.corrcoef(frequencies_homer_eng, lengths_homer_eng)[0, 1]
+print(f"Correlation between word frequency and word length in English Homer: {correlation:.2f}")
 
 
 
@@ -180,18 +175,18 @@ import re
 text_homer_clean = re.findall(r'\b[a-zA-Z]+\b', text_homer)
 
 # Normalize the tokens in Basque Homer
-words_normed_homer = [w.lower() for w in text_homer_clean]
+words_normed_homer_eusk = [w.lower() for w in text_homer_clean]
 
 # Calculate word frequencies in Basque Homer
-wordfreq_homer = Counter(words_normed_homer)
+wordfreq_homer_eusk = Counter(words_normed_homer_eusk)
 
 # Calculate word lengths in Basque Homer
-wordlength_homer = {word: len(word) for word in wordfreq_homer}
+wordlength_homer_eusk = {word: len(word) for word in wordfreq_homer_eusk}
 
 # Prepare data for correlation in Basque Homer
-frequencies_homer = list(wordfreq_homer.values())
-lengths_homer = [wordlength_homer[word] for word in wordfreq_homer]
+frequencies_homer_eusk = list(wordfreq_homer_eusk.values())
+lengths_homer_eusk = [wordlength_homer_eusk[word] for word in wordfreq_homer_eusk]
 
 # Calculate Pearson correlation coefficient in Basque Homer
-correlation = np.corrcoef(frequencies_homer, lengths_homer)[0, 1]
-print(f"Correlation between word frequency and word length: {correlation:.2f}")
+correlation = np.corrcoef(frequencies_homer_eusk, lengths_homer_eusk)[0, 1]
+print(f"Correlation between word frequency and word length in Basque Homer: {correlation:.2f}")
