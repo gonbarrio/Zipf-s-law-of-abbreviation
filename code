@@ -1,0 +1,197 @@
+!pip install PyPDF2
+!pip install spacy
+!python -m spacy download en_core_web_sm
+
+import re
+import spacy
+from collections import Counter
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+import numpy as np
+import requests
+import PyPDF2
+
+
+
+
+
+### ENGLISH LEGAL TEXT ###
+
+# Download the English PDF
+url_eng = "https://www.legislation.wa.gov.au/legislation/prod/filestore.nsf/FileURL/mrdoc_37092.pdf/$FILE/Housing%20Act%201980%20-%20%5B04-c0-01%5D.pdf?OpenElement"
+response = requests.get(url_eng)
+
+# Save the English PDF to a temporary file
+with open("temp.pdf", "wb") as f:
+    f.write(response.content)
+
+# Extract text from English PDF
+pdf_file_eng = open("temp.pdf", "rb")
+pdf_reader_eng = PyPDF2.PdfReader(pdf_file_eng)
+text_eng = ""
+
+for page in pdf_reader_eng.pages:
+    text_eng += page.extract_text()
+
+pdf_file_eng.close()
+
+# Tokenize the English text
+import re
+text_eng_clean = re.findall(r'\b[a-zA-Z]+\b', text_eng)
+
+# Normalize the English tokens
+words_normed_eng = [w.lower() for w in text_eng_clean]
+
+# Calculate word frequencies for English
+wordfreq_eng = Counter(words_normed_eng)
+
+# Calculate word lengths for English
+wordlength_eng = {word: len(word) for word in wordfreq_eng}
+
+# Prepare English data for correlation
+frequencies_eng = list(wordfreq_eng.values())
+lengths_eng = [wordlength_eng[word] for word in wordfreq_eng]
+
+# Calculate Pearson correlation coefficient for English
+correlation = np.corrcoef(frequencies_eng, lengths_eng)[0, 1]
+print(f"Correlation between word frequency and word length: {correlation:.2f}")
+
+# Plot word frequency vs. word length for English
+plt.scatter(frequencies_eng, lengths_eng, alpha=0.5)
+plt.title("Zipf's law of abbreviation in an English legal text")
+plt.xlabel("Word frequency")
+plt.ylabel("Word length")
+plt.show()
+
+
+
+
+
+### BASQUE LEGAL TEXT ###
+  
+# Download the Basque PDF
+url_eusk = "https://www.iusplaza.com/fitxategiak/1502853e.pdf"
+response_eusk = requests.get(url_eusk)
+
+# Save the Basque PDF to a temporary file
+with open("temp.pdf", "wb") as f:
+    f.write(response_eusk.content)
+
+# Extract text from Basque PDF
+pdf_file_eusk = open("temp.pdf", "rb")
+pdf_reader_eusk = PyPDF2.PdfReader(pdf_file_eusk)
+text_eusk = ""
+
+for page in pdf_reader_eusk.pages:
+    text_eusk += page.extract_text()
+
+pdf_file_eusk.close()
+
+# Tokenize the Basque text
+import re
+text_eusk_clean = re.findall(r'\b[a-zA-Z]+\b', text_eusk)
+
+# Normalize the Basque tokens
+words_normed_eusk = [w.lower() for w in text_eusk_clean]
+
+# Calculate word frequencies for Basque
+wordfreq_eusk = Counter(words_normed_eusk)
+
+# Calculate word lengths for Basque
+wordlength_eusk = {word: len(word) for word in wordfreq_eusk}
+
+# Prepare Basque data for correlation
+frequencies_eusk = list(wordfreq_eusk.values())
+lengths_eusk = [wordlength_eusk[word] for word in wordfreq_eusk]
+
+# Calculate Pearson correlation coefficient for Basque
+correlation = np.corrcoef(frequencies_eusk, lengths_eusk)[0, 1]
+print(f"Correlation between word frequency and word length: {correlation:.2f}")
+
+# Plot word frequency vs. word length for Basque
+plt.scatter(frequencies_eusk, lengths_eusk, alpha=0.5)
+plt.title("Zipf's law of abbreviation in a Basque legal text")
+plt.xlabel("Word frequency")
+plt.ylabel("Word length")
+plt.show()
+
+
+
+
+
+### CONTROL: ENGLISH NOVEL ###
+
+# Read text from URL: Homer in English
+
+import urllib.request
+book_url = 'https://www.gutenberg.org/cache/epub/1727/pg1727.txt'
+
+book_text = urllib.request.urlopen(book_url)
+book_text = book_text.read()
+book_text = book_text.decode("utf-8")
+
+# Tokenize the text in English Homer
+book_clean = re.findall(r'\b[a-zA-Z]+\b', book_text)
+
+# Normalize the tokens in English Homer
+words_normed_homer_eng = [w.lower() for w in book_clean]
+
+# Calculate word frequencies in English Homer
+wordfreq_homer_eng = Counter(words_normed_homer_eng)
+
+# Calculate word lengths in English Homer
+wordlength_homer_eng = {word: len(word) for word in wordfreq_homer_eng}
+
+# Prepare data for correlation in English Homer
+frequencies_homer_eng = list(wordfreq_homer_eng.values())
+lengths_homer_eng = [wordlength_homer_eng[word] for word in wordfreq_homer_eng]
+
+# Calculate Pearson correlation coefficient in English Homer
+correlation = np.corrcoef(frequencies, lengths)[0, 1]
+print(f"Correlation between word frequency and word length: {correlation:.2f}")
+
+
+
+  
+
+### CONTROL: BASQUE NOVEL ###
+
+# Download the PDF for Basque Homer
+url_homer = "http://aitasanti.amorebieta-etxano.net/PDF/idazleak/Aita%20Santi%20Onaindia/Liburuak/1985/Odisea%20HOMERO.pdf"
+response_homer = requests.get(url_homer)
+
+# Save the Basque Homer PDF to a temporary file
+with open("temp.pdf", "wb") as f:
+    f.write(response_homer.content)
+
+# Extract text from Basque Homer PDF
+pdf_file_homer = open("temp.pdf", "rb")
+pdf_reader_homer = PyPDF2.PdfReader(pdf_file_homer)
+text_homer = ""
+
+for page in pdf_reader_homer.pages:
+    text_homer += page.extract_text()
+
+pdf_file_homer.close()
+
+# Tokenize the text in Basque Homer
+import re
+text_homer_clean = re.findall(r'\b[a-zA-Z]+\b', text_homer)
+
+# Normalize the tokens in Basque Homer
+words_normed_homer = [w.lower() for w in text_homer_clean]
+
+# Calculate word frequencies in Basque Homer
+wordfreq_homer = Counter(words_normed_homer)
+
+# Calculate word lengths in Basque Homer
+wordlength_homer = {word: len(word) for word in wordfreq_homer}
+
+# Prepare data for correlation in Basque Homer
+frequencies_homer = list(wordfreq_homer.values())
+lengths_homer = [wordlength_homer[word] for word in wordfreq_homer]
+
+# Calculate Pearson correlation coefficient in Basque Homer
+correlation = np.corrcoef(frequencies_homer, lengths_homer)[0, 1]
+print(f"Correlation between word frequency and word length: {correlation:.2f}")
