@@ -32,7 +32,6 @@ for page in pdf_reader_eng.pages:
 pdf_file_eng.close()
 
 # Tokenize the English text
-import re
 text_eng_clean = re.findall(r'\b[a-zA-Z]+\b', text_eng)
 
 # Normalize the English tokens
@@ -84,7 +83,6 @@ for page in pdf_reader_eusk.pages:
 pdf_file_eusk.close()
 
 # Tokenize the Basque text
-import re
 text_eusk_clean = re.findall(r'\b[a-zA-Z]+\b', text_eusk)
 
 # Normalize the Basque tokens
@@ -171,7 +169,6 @@ for page in pdf_reader_homer.pages:
 pdf_file_homer.close()
 
 # Tokenize the text in Basque Homer
-import re
 text_homer_clean = re.findall(r'\b[a-zA-Z]+\b', text_homer)
 
 # Normalize the tokens in Basque Homer
